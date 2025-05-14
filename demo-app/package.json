@@ -1,0 +1,21 @@
+{
+  "name": "repair-manager-demo",
+  "version": "1.0.0",
+  "description": "Demo application for the Onboarding Assistant integration",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.2",
+    "axios": "^1.4.0",
+    "onboarding-assistant-sdk": "file:../frontend"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.3.9"
+  }
+}

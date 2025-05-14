@@ -1,0 +1,52 @@
+{
+  "route": "/workorders/new",
+  "description": "Form for creating a new work order with details about the repair needed.",
+  "elements": [
+    {
+      "id": "customer-name",
+      "description": "Input field for customer name"
+    },
+    {
+      "id": "device-type-select",
+      "description": "Dropdown to select the type of device being repaired"
+    },
+    {
+      "id": "issue-description",
+      "description": "Text area for describing the issue with the device"
+    },
+    {
+      "id": "priority-select",
+      "description": "Dropdown to select the priority level of the repair"
+    },
+    {
+      "id": "assign-technician-select",
+      "description": "Dropdown to assign a technician to the work order"
+    },
+    {
+      "id": "submit-button",
+      "description": "Button to submit the new work order"
+    },
+    {
+      "id": "cancel-button",
+      "description": "Button to cancel and return to the previous page"
+    }
+  ],
+  "apiCalls": [
+    "GET /api/technicians",
+    "GET /api/devices/types",
+    "POST /api/workorders"
+  ],
+  "dependencies": [
+    "DeviceTypeSelector",
+    "TechnicianSelector"
+  ],
+  "userActions": [
+    "Fill in customer information",
+    "Select device type",
+    "Describe the issue",
+    "Set priority level",
+    "Assign a technician",
+    "Submit the work order",
+    "Cancel and return to previous page"
+  ]
+}

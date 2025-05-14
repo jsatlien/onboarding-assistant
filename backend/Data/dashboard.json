@@ -1,0 +1,36 @@
+{
+  "route": "/dashboard",
+  "description": "Main dashboard displaying repair statistics, recent work orders, and quick access to common actions.",
+  "elements": [
+    {
+      "id": "create-work-order-btn",
+      "description": "Creates a new work order"
+    },
+    {
+      "id": "recent-work-orders",
+      "description": "Displays a list of recent work orders with status indicators"
+    },
+    {
+      "id": "repair-stats-chart",
+      "description": "Chart showing repair completion statistics over time"
+    },
+    {
+      "id": "quick-actions-panel",
+      "description": "Panel with shortcuts to common actions like creating work orders, viewing inventory, etc."
+    }
+  ],
+  "apiCalls": [
+    "GET /api/workorders/recent",
+    "GET /api/stats/repairs"
+  ],
+  "dependencies": [
+    "WorkOrderList",
+    "StatsChart"
+  ],
+  "userActions": [
+    "View recent work orders",
+    "Create a new work order",
+    "View repair statistics",
+    "Access quick actions"
+  ]
+}
