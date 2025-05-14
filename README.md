@@ -221,6 +221,39 @@ For production deployment, make sure to:
 2. Configure CORS settings in the backend
 3. Set up proper SSL/TLS for secure communication
 
+### CORS Configuration
+
+The Onboarding Assistant backend includes built-in CORS support to allow cross-origin requests from client applications. This is essential when your client application is hosted on a different domain than the backend API.
+
+#### Development Environment
+
+In development, the backend allows requests from any origin by default, making local testing easier.
+
+#### Production Environment
+
+For production, you must explicitly specify which origins are allowed to access the API:
+
+1. **Configure allowed origins** in `appsettings.json`:
+
+   ```json
+   "AllowedOrigins": [
+     "https://your-client-app.com",
+     "https://another-client-app.com"
+   ]
+   ```
+
+2. **Environment-specific settings** can be configured in `appsettings.Production.json`.
+
+#### Alternative Approaches
+
+If CORS becomes problematic in your deployment scenario, consider these alternatives:
+
+1. **Reverse Proxy**: Configure a reverse proxy (like Nginx) to serve both your client application and the Onboarding Assistant backend from the same domain, eliminating CORS issues entirely.
+
+2. **Backend-for-Frontend (BFF)**: Create a lightweight API within your client application's domain that forwards requests to the Onboarding Assistant backend.
+
+3. **Same-Origin Deployment**: Deploy the Onboarding Assistant backend to the same domain as your client application.
+
 ## License
 
 MIT
