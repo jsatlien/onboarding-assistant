@@ -5,6 +5,29 @@ This directory contains CLI tools for the Onboarding Assistant:
 1. **Metadata Generator**: Scans source code to extract contextual metadata
 2. **Embedding Upload Tool**: Converts metadata to embeddings and uploads them to OpenAI
 
+## Complete Workflow
+
+Here's the complete workflow for setting up and using the Onboarding Assistant:
+
+1. **Set up an OpenAI Assistant**
+   - Create an OpenAI account and get an API key
+   - Create a new Assistant with appropriate instructions
+   - Copy the Assistant ID
+
+2. **Configure the tools**
+   - Create or update `config/assistant_config.yaml` with your API key and Assistant ID
+
+3. **Extract metadata from your application**
+   - Run `python metadata_generator.py <source_dir> --output-dir ./output`
+   - This generates JSON files with contextual information about your app
+
+4. **Generate and upload embeddings**
+   - Run `python upload_embeddings.py --config ./config/assistant_config.yaml`
+   - This creates embeddings for each route and stores them locally
+
+5. **Integrate the Onboarding Assistant into your application**
+   - Follow the integration instructions in the main project README
+
 ## Metadata Generator
 
 This tool scans source code files (.vue, .cs, .json) to extract contextual metadata for the Onboarding Assistant. The metadata is output as structured JSON files that can be used for RAG (Retrieval Augmented Generation) embedding with OpenAI.
@@ -76,6 +99,102 @@ The tool uses pattern matching and static analysis to extract:
 5. **User Actions**: Inferred from method names and event handlers
 
 For best results, include descriptive comments in your code, especially near UI elements. When using non-Vue frameworks, adding clear ID attributes to important UI elements and descriptive comments will improve extraction quality.
+
+## OpenAI Assistant Setup
+
+Before extracting and uploading metadata, you need to set up an OpenAI Assistant to use with the Onboarding Assistant.
+
+### Step 1: Set Up Your OpenAI Account
+
+1. Visit https://platform.openai.com/ and sign in.
+2. Go to https://platform.openai.com/api-keys.
+3. Click "Create new secret key" and copy it.
+4. Store this key securely — you'll add it to your `assistant_config.yaml` file later.
+
+### Step 2: Manually Create an Assistant
+
+Navigate to https://platform.openai.com/assistants.
+
+Click "Create Assistant".
+
+Fill out the fields as described below.
+
+#### Assistant Configuration
+
+| Field | What to Enter |
+| ----- | ------------- |
+| Name | Any friendly name for your assistant (e.g., Walli, Repair Assistant) |
+| Instructions | Paste in the Assistant Instructions Template from below and fill in the variables |
+| Model | See model guidance below |
+| Tools | See tool guidance below |
+
+#### Model Selection
+
+| Model | Cost | Context Length | Notes |
+| ----- | ---- | -------------- | ----- |
+| gpt-4o (recommended) | 💰💰 | 128k tokens | Best speed + price/performance ratio. Great for production use. |
+| gpt-4-turbo | 💰💰💰 | 128k tokens | Similar to gpt-4o, slightly slower, formerly the best option. |
+| gpt-3.5-turbo | 💰 | 16k tokens | Budget-friendly, less accurate with instructions and metadata. |
+
+✅ Recommendation: Use gpt-4o for the best balance of cost, speed, and understanding.
+
+#### Tool Selection
+
+✅ **File Search (RECOMMENDED – Enable)**
+- Allows the assistant to retrieve answers from attached files.
+- In the future, you may upload your metadata or configuration files here.
+- For now, it can be left unused, but enable it to future-proof your setup.
+
+❌ **Code Interpreter (DISABLE)**
+- Used for writing and executing Python code inside the assistant.
+- Useful for tasks like data analysis or config file validation.
+- Not needed for this POC and introduces unnecessary complexity.
+
+❌ **Functions (DISABLE)**
+- Enables the assistant to call external APIs or frontend functions (e.g., highlight_element).
+- While this is powerful for deep integration with your UI, it's out of scope for the current implementation.
+- Leave it disabled for now. You can add this later if you build out the frontend bridge.
+
+#### Assistant Instructions Template
+
+```
+You are {{ASSISTANT_NAME}}, a contextual onboarding assistant for a web application called {{APP_NAME}}, which operates in the {{APP_DOMAIN}} domain.
+
+Your job is to help users:
+- Understand what each page of the app does
+- Find and interact with relevant UI elements on the current screen
+- Navigate through the application as needed
+
+You receive metadata from the developer that includes:
+- The current route (e.g. "/workorders/new")
+- A description of what the page does
+- A list of UI elements with their labels or IDs
+- Any associated API calls or user actions
+
+Use this information to answer user questions clearly and concisely. Highlight UI elements when needed. Do not make assumptions about application internals beyond the provided metadata.
+
+If users ask for your name or what to call you, tell them you are {{ASSISTANT_NAME}}.
+
+Remain friendly, professional, and grounded in the current page context at all times.
+```
+
+> ⚠️ **Important**: Replace `{{APP_NAME}}` and `{{APP_DOMAIN}}` with your actual app name and domain/industry. Replace `{{ASSISTANT_NAME}}` with a friendly name for your assistant (e.g., "Riley", "Fixie").
+
+### Step 3: Copy the Assistant ID
+
+Once the assistant is saved, you'll see an ID like:
+
+```
+asst_abc123456789
+```
+
+Add this to your assistant config file:
+
+```yaml
+assistant_id: "asst_abc123456789"
+```
+
+You're now ready to run the metadata extraction and embedding tools!
 
 ## Embedding Upload Tool
 
