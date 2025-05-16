@@ -37,8 +37,8 @@ namespace OnboardingAssistant.Services
                     currentThreadId = threadId;
                 }
 
-                // Add a message to the thread
-                var messageContent = $"User query: {query}\n\nCurrent page context: {JsonSerializer.Serialize(context)}";
+                // Add a message to the thread with the current route for better context retrieval
+                var messageContent = $"The user is currently on {context.Route} and has asked: {query}";
                 await _client.CreateMessageAsync(currentThreadId, new CreateMessageOptions
                 {
                     Role = ChatRole.User,

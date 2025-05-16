@@ -33,7 +33,7 @@ builder.Services.AddCors(options =>
 
 // Register our services
 builder.Services.AddSingleton<OpenAIService>();
-builder.Services.AddSingleton<EmbeddingService>();
+builder.Services.AddSingleton<RouteContextService>();
 
 var app = builder.Build();
 

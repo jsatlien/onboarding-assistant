@@ -12,12 +12,12 @@ namespace OnboardingAssistant.Controllers
     public class AssistantController : ControllerBase
     {
         private readonly OpenAIService _openAIService;
-        private readonly EmbeddingService _embeddingService;
+        private readonly RouteContextService _routeContextService;
 
-        public AssistantController(OpenAIService openAIService, EmbeddingService embeddingService)
+        public AssistantController(OpenAIService openAIService, RouteContextService routeContextService)
         {
             _openAIService = openAIService;
-            _embeddingService = embeddingService;
+            _routeContextService = routeContextService;
         }
 
         [HttpPost("query")]
@@ -29,7 +29,7 @@ namespace OnboardingAssistant.Controllers
             }
 
             // Get context for the current route
-            var context = await _embeddingService.GetContextForRouteAsync(request.Route);
+            var context = _routeContextService.GetContextForRoute(request.Route);
 
             // Process the query with the OpenAI service, passing the thread ID if available
             var response = await _openAIService.ProcessQueryAsync(request.Query, context, request.ThreadId);
@@ -38,14 +38,14 @@ namespace OnboardingAssistant.Controllers
         }
 
         [HttpGet("context")]
-        public async Task<ActionResult<RouteContext>> GetContext([FromQuery] string route)
+        public ActionResult<RouteContext> GetContext([FromQuery] string route)
         {
             if (string.IsNullOrEmpty(route))
             {
                 return BadRequest("Route cannot be empty");
             }
 
-            var context = await _embeddingService.GetContextForRouteAsync(route);
+            var context = _routeContextService.GetContextForRoute(route);
             return Ok(context);
         }
     }

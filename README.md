@@ -8,7 +8,7 @@ This project implements a complete Onboarding Assistant solution with three main
 
 1. **Frontend SDK**: A Vue.js component library that provides a floating assistant UI
 2. **Backend API**: A .NET Core API that integrates with OpenAI's Assistant API
-3. **CLI Tool**: A Python-based tool for generating contextual metadata from source code
+3. **CLI Tool**: A Node.js-based CLI tool for generating contextual metadata files for direct upload to OpenAI Assistant
 
 Additionally, a demo application is included to showcase the Onboarding Assistant in action.
 
@@ -44,8 +44,9 @@ OnboardingAssistant/
 │   ├── appsettings.json      # Configuration
 │   └── Dockerfile            # Docker configuration
 │
-├── cli-tool/                 # Metadata generation tool
-│   ├── metadata_generator.py # Python script
+├── OnboardingAssistantCLI/    # Metadata generation tool
+│   ├── bin/                  # CLI executable
+│   ├── lib/                  # Core functionality
 │   └── README.md             # CLI tool documentation
 │
 ├── demo-app/                 # Demo application
@@ -68,7 +69,7 @@ OnboardingAssistant/
 
 - Node.js 18+ and npm for frontend development
 - .NET 8 SDK for backend development
-- Python 3.6+ for the CLI tool
+- Node.js 18+ for the CLI tool
 - OpenAI API key for Assistant API integration
 - Docker and Docker Compose (optional, for containerized deployment)
 
@@ -156,14 +157,27 @@ docker-compose up -d
 
 ## Using the CLI Tool
 
-The CLI tool scans source code to generate contextual metadata for the Onboarding Assistant.
+The Onboarding Assistant CLI tool generates contextual metadata files for direct upload to OpenAI Assistant.
+
+### Installation
 
 ```bash
-cd cli-tool
-python metadata_generator.py <source_dir> --output-dir ../backend/Data
+npm install -g onboarding-assistant-cli
 ```
 
-For more details, see the [CLI Tool README](./cli-tool/README.md).
+### Usage
+
+```bash
+# Generate frontend context files
+onboarding-assistant generate-frontend -s <source-dir> -o <output-dir> -c <config-file>
+
+# Generate backend context files
+onboarding-assistant generate-backend -s <source-dir> -o <output-dir> -c <config-file>
+```
+
+The generated context files can be directly uploaded to your OpenAI Assistant through the OpenAI web interface.
+
+For more details, see the [CLI Tool README](https://github.com/jsatlien/onboarding-assistant-cli).
 
 ## Integrating the Onboarding Assistant
 
