@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "description": "AI-powered Onboarding Assistant SDK for dynamically guiding users through application workflows",
   "main": "dist/onboarding-assistant.js",
+  "module": "dist/onboarding-assistant.mjs",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "onboarding",
@@ -16,7 +21,15 @@
     "vue",
     "sdk"
   ],
-  "author": "",
+  "author": "Jsatl",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsatlien/onboarding-assistant"
+  },
+  "homepage": "https://github.com/jsatlien/onboarding-assistant",
+  "bugs": {
+    "url": "https://github.com/jsatlien/onboarding-assistant/issues"
+  },
   "license": "MIT",
   "dependencies": {
     "vue": "^3.3.4",

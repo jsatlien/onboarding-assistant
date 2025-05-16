@@ -183,10 +183,10 @@ For more details, see the [CLI Tool README](https://github.com/jsatlien/onboardi
 
 ### In a Vue.js Application
 
-1. Install the package:
+1. Install the package from npm:
 
 ```bash
-npm install --save path/to/onboarding-assistant-sdk
+npm install --save onboarding-assistant-sdk
 ```
 
 2. Import and register the component:
@@ -210,12 +210,16 @@ app.mount('#app')
     
     <!-- Onboarding Assistant Widget -->
     <AssistantWidget 
-      api-base-url="http://localhost:5000/api"
+      api-base-url="https://your-backend-api.com/api"
       assistant-name="Your Assistant Name"
     />
   </div>
 </template>
 ```
+
+4. Configure your backend API endpoint:
+
+   The `api-base-url` prop should point to your hosted backend API endpoint where you've deployed the Onboarding Assistant backend.
 
 ## Customization
 
@@ -227,7 +231,36 @@ The Onboarding Assistant can be customized through props passed to the `Assistan
 
 ## Deployment
 
+### Backend Deployment
+
+The backend API can be deployed in several ways:
+
+#### Option 1: Docker Deployment (Recommended)
+
 The application is containerized using Docker and can be deployed to any container orchestration platform like Kubernetes.
+
+```bash
+# Build the Docker image
+cd backend
+docker build -t onboarding-assistant-backend .
+
+# Run the container
+docker run -p 5000:80 -e "OpenAI__ApiKey=your_api_key" -e "OpenAI__AssistantId=your_assistant_id" onboarding-assistant-backend
+```
+
+#### Option 2: Direct .NET Deployment
+
+```bash
+# Publish the application
+cd backend
+dotnet publish -c Release
+
+# Deploy the published files to your hosting environment
+```
+
+#### Option 3: Azure App Service
+
+The backend can be easily deployed to Azure App Service using the Azure CLI or directly from Visual Studio.
 
 For production deployment, make sure to:
 
@@ -267,6 +300,55 @@ If CORS becomes problematic in your deployment scenario, consider these alternat
 2. **Backend-for-Frontend (BFF)**: Create a lightweight API within your client application's domain that forwards requests to the Onboarding Assistant backend.
 
 3. **Same-Origin Deployment**: Deploy the Onboarding Assistant backend to the same domain as your client application.
+
+## Publishing the SDK to npm
+
+To make the Onboarding Assistant SDK available on npm for easy installation, follow these steps:
+
+### 1. Build the SDK
+
+```bash
+cd frontend
+npm install
+npm run build
+```
+
+This will create a `dist` folder with the built SDK files.
+
+### 2. Log in to npm
+
+```bash
+npm login
+```
+
+You'll be prompted to enter your npm username, password, and email.
+
+### 3. Publish the package
+
+```bash
+cd frontend
+npm publish
+```
+
+If you want to publish a scoped package (under your npm username), first update the package name in `package.json`:
+
+```json
+"name": "@yourusername/onboarding-assistant-sdk"
+```
+
+Then publish with:
+
+```bash
+npm publish --access public
+```
+
+### 4. Updating the package
+
+When you make changes to the SDK, update the version number in `package.json` following semantic versioning (major.minor.patch), then run:
+
+```bash
+npm publish
+```
 
 ## License
 
