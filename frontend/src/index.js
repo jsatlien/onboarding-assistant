@@ -4,9 +4,18 @@ import AssistantWidget from './components/AssistantWidget.vue';
 export { AssistantWidget };
 
 // Create install function
-export function install(app) {
-  // Register components
-  app.component('AssistantWidget', AssistantWidget);
+export function install(Vue) {
+  // Check if Vue.use() was called with Vue 2 or Vue 3
+  if (Vue.component) {
+    // Vue 2
+    Vue.component('AssistantWidget', AssistantWidget);
+  } else if (Vue.app?.component) {
+    // Vue 3
+    Vue.app.component('AssistantWidget', AssistantWidget);
+  } else {
+    // Assume Vue 3 directly
+    Vue.component('AssistantWidget', AssistantWidget);
+  }
 }
 
 // Create module definition for Vue.use()

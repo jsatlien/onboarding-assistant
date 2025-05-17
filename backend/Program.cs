@@ -1,6 +1,13 @@
+using Microsoft.Extensions.Logging;
 using OnboardingAssistant.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -31,6 +38,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Configure OpenAI settings from appsettings.json
+builder.Services.Configure<OpenAISettings>(options => {
+    options.ApiKey = builder.Configuration["OpenAI:ApiKey"] ?? throw new ArgumentNullException("OpenAI:ApiKey configuration is missing");
+    options.AssistantId = builder.Configuration["OpenAI:AssistantId"] ?? throw new ArgumentNullException("OpenAI:AssistantId configuration is missing");
+    options.VerboseLogging = builder.Configuration.GetValue<bool>("OpenAI:VerboseLogging");
+});
+
 // Register our services
 builder.Services.AddSingleton<OpenAIService>();
 builder.Services.AddSingleton<RouteContextService>();
@@ -44,7 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Comment out HTTPS redirection for local development
+// app.UseHttpsRedirection();
 
 // Use CORS - allow all origins for now
 app.UseCors("AllowAll");

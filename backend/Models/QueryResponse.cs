@@ -4,7 +4,7 @@ namespace OnboardingAssistant.Models
 {
     public class QueryResponse
     {
-        public string Response { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
         public List<AssistantAction>? Actions { get; set; }
         public string ThreadId { get; set; } = string.Empty;
     }

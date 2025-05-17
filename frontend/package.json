@@ -1,6 +1,6 @@
 {
   "name": "onboarding-assistant-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "AI-powered Onboarding Assistant SDK for dynamically guiding users through application workflows",
   "main": "dist/onboarding-assistant.js",
   "module": "dist/onboarding-assistant.mjs",

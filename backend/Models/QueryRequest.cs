@@ -4,6 +4,6 @@ namespace OnboardingAssistant.Models
     {
         public string Query { get; set; } = string.Empty;
         public string Route { get; set; } = string.Empty;
-        public string ThreadId { get; set; } = string.Empty;
+        public string? ThreadId { get; set; } = null;
     }
 }

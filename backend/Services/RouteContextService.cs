@@ -11,12 +11,12 @@ namespace OnboardingAssistant.Services
     public class RouteContextService
     {
         private readonly string _dataDirectory;
-        private Dictionary<string, RouteContext> _routeContexts;
+        private Dictionary<string, OnboardingAssistant.Models.RouteContext> _routeContexts;
 
         public RouteContextService(IConfiguration configuration)
         {
             _dataDirectory = configuration["Data:Directory"] ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
-            _routeContexts = new Dictionary<string, RouteContext>();
+            _routeContexts = new Dictionary<string, OnboardingAssistant.Models.RouteContext>();
             
             // Load route contexts from JSON files if they exist
             // This is only for backward compatibility with existing JSON files
@@ -39,7 +39,7 @@ namespace OnboardingAssistant.Services
                     try
                     {
                         var json = File.ReadAllText(file);
-                        var context = JsonSerializer.Deserialize<RouteContext>(json);
+                        var context = JsonSerializer.Deserialize<OnboardingAssistant.Models.RouteContext>(json);
                         if (context != null && !string.IsNullOrEmpty(context.Route))
                         {
                             _routeContexts[context.Route] = context;
@@ -59,7 +59,7 @@ namespace OnboardingAssistant.Services
             }
         }
 
-        public RouteContext GetContextForRoute(string route)
+        public OnboardingAssistant.Models.RouteContext GetContextForRoute(string route)
         {
             // Normalize the route
             route = NormalizeRoute(route);
@@ -72,7 +72,7 @@ namespace OnboardingAssistant.Services
 
             // If no match found, return a minimal context with just the route
             // OpenAI's Retrieval system will handle finding the relevant context
-            return new RouteContext
+            return new OnboardingAssistant.Models.RouteContext
             {
                 Route = route,
                 Description = "Using OpenAI Retrieval for context.",
